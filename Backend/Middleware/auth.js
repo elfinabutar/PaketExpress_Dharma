@@ -1,44 +1,68 @@
 import jwt from 'jsonwebtoken';
-import { sendResponse } from '../Utils/responseHandler.js';
+import env from '../Config/environment.js';
 
-const SECRET_KEY = process.env.JWT_SECRET || 'paketexpress2026#';
-
+/**
+ * Middleware untuk autentikasi halaman (page authentication)
+ * Menggunakan cookie token untuk validasi
+ */
 export const authPage = (req, res, next) => {
     const token = req.cookies?.token;
-    
-    if (!token) {
-        return res.redirect('/login');
-    }
+    if (!token) return res.redirect('/login');
     
     try {
-        const decoded = jwt.verify(token, SECRET_KEY);
-        req.user = decoded;
+        req.user = jwt.verify(token, env.SECRET);
         next();
-    } catch (error) {
+    } catch (err) {
         res.clearCookie('token');
-        return res.redirect('/login');
+        res.redirect('/login');
     }
 };
 
+/**
+ * Middleware untuk autentikasi API
+ * Menggunakan Bearer token dari header Authorization
+ */
 export const authApi = (req, res, next) => {
-    const token = req.cookies?.token || req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[1];
     
     if (!token) {
-        return sendResponse(res, 401, false, 'Belum login');
+        return res.status(401).json({
+            success: false,
+            message: 'Token tidak ditemukan. Silakan login terlebih dahulu.'
+        });
     }
     
     try {
-        const decoded = jwt.verify(token, SECRET_KEY);
-        req.user = decoded;
+        req.user = jwt.verify(token, env.SECRET);
         next();
-    } catch (error) {
-        return sendResponse(res, 403, false, 'Token tidak valid atau kadaluarsa');
+    } catch (err) {
+        return res.status(403).json({
+            success: false,
+            message: 'Token tidak valid atau sudah kadaluarsa'
+        });
     }
 };
 
-export const adminOnly = (req, res, next) => {
-    if (req.user.role !== 'admin') {
-        return sendResponse(res, 403, false, 'Akses hanya untuk admin');
-    }
-    next();
+/**
+ * Middleware untuk otorisasi berdasarkan role
+ * @param {array} roles - Daftar role yang diizinkan
+ */
+export const authorize = (roles = []) => {
+    return (req, res, next) => {
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Anda harus login terlebih dahulu'
+            });
+        }
+        
+        if (roles.length && !roles.includes(req.user.role)) {
+            return res.status(403).json({
+                success: false,
+                message: 'Anda tidak memiliki akses ke resource ini'
+            });
+        }
+        
+        next();
+    };
 };

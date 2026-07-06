@@ -3,21 +3,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const db = mysql.createPool({
-    host: process.env.DB_HOST || '127.0.0.1',
+const pool = mysql.createPool({
+    host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'paket_express',
-    port: parseInt(process.env.DB_PORT) || 3306
+    port: process.env.DB_PORT || 3306,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
-// Test koneksi
-try {
-    const conn = await db.getConnection();
-    console.log('✅ Database connected:', process.env.DB_NAME);
-    conn.release();
-} catch (err) {
-    console.error('❌ Database error:', err.message);
-}
-
-export default db;
+export default pool;

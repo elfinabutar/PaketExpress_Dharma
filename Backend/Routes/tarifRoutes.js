@@ -1,11 +1,25 @@
 import express from 'express';
-import tarifController from '../Controllers/tarifController.js';
+import { getAllTarif, hitungTarif, getKotaList } from '../Controllers/tarifController.js';
 import { authApi } from '../Middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', tarifController.getAllTarif);
-router.get('/kota', tarifController.getKota);
-router.get('/cek', tarifController.cekTarif);
+/**
+ * GET /api/tarif
+ * Dapatkan semua tarif
+ */
+router.get('/', authApi, getAllTarif);
+
+/**
+ * POST /api/tarif/hitung
+ * Hitung tarif berdasarkan berat
+ */
+router.post('/hitung', authApi, hitungTarif);
+
+/**
+ * GET /api/kota
+ * Dapatkan daftar kota
+ */
+router.get('/kota', authApi, getKotaList);
 
 export default router;

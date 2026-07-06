@@ -2,21 +2,121 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lupa Password - PaketExpress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;justify-content:center;align-items:center}
-        .card{background:#fff;border-radius:10px;padding:2rem;text-align:center;max-width:400px}
-        h1{color:#667eea;margin-bottom:1rem}
-        .info{background:#d1ecf1;color:#0c5460;padding:1rem;border-radius:5px;margin:1rem 0}
-        a{color:#667eea;text-decoration:none;margin:0 10px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header i {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .content p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>🔐 Lupa Password</h1>
-        <div class="info">📞 Hubungi admin: admin@paketexpress.com</div>
-        <a href="/login">Kembali ke Login</a> | <a href="/daftar">Daftar</a>
+    <div class="container">
+        <div class="header">
+            <i class="fas fa-lock"></i>
+            <h1>Reset Password</h1>
+        </div>
+        <div class="content">
+            <p>Masukkan email Anda untuk menerima instruksi reset password</p>
+            <form id="resetForm">
+                <input type="email" class="email-input" placeholder="Masukkan email Anda" required>
+                <button type="submit" class="reset-btn">Kirim Link Reset</button>
+            </form>
+            <p style="margin-top: 15px; font-size: 12px; color: #999;">
+                Fitur reset password akan segera tersedia
+            </p>
+        </div>
+        <div class="footer">
+            <a href="/login">Kembali ke Login</a>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('resetForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Fitur reset password sedang dalam pengembangan. Hubungi admin untuk bantuan.');
+        });
+    </script>
 </body>
 </html>

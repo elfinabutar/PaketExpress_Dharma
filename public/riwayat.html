@@ -2,68 +2,179 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat - PaketExpress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial;background:#f0f2f5}
-        .navbar{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-        .nav-brand a{font-size:1.5rem;font-weight:bold;color:#667eea;text-decoration:none}
-        .nav-menu{display:flex;list-style:none;gap:1.5rem;flex-wrap:wrap}
-        .nav-menu a{text-decoration:none;color:#333}
-        .container{max-width:1200px;margin:2rem auto;padding:0 1rem}
-        .card{background:#fff;border-radius:10px;padding:2rem;margin-bottom:1.5rem}
-        table{width:100%;border-collapse:collapse}
-        th,td{padding:10px;text-align:left;border-bottom:1px solid #ddd}
-        th{background:#f5f5f5}
-        .btn{display:inline-block;padding:5px 10px;background:#667eea;color:#fff;text-decoration:none;border-radius:5px}
-        .status-pending{background:#fef3c7;color:#d97706;padding:3px 10px;border-radius:20px;display:inline-block}
-        .status-diproses{background:#dbeafe;color:#2563eb;padding:3px 10px;border-radius:20px}
-        .status-dikirim{background:#d1fae5;color:#059669;padding:3px 10px;border-radius:20px}
-        .status-diterima{background:#d4edda;color:#155724;padding:3px 10px;border-radius:20px}
-        .status-batal{background:#fee2e2;color:#dc2626;padding:3px 10px;border-radius:20px}
-        @media(max-width:768px){.table-responsive{overflow-x:auto}}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f5f7fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand"><a href="/dashboard">📦 PaketExpress</a></div>
-        <ul class="nav-menu">
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/kirim">Kirim</a></li>
-            <li><a href="/lacak">Lacak</a></li>
-            <li><a href="/tarif">Tarif</a></li>
-            <li><a href="/riwayat">Riwayat</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="#" id="logoutBtn">Logout</a></li>
-        </ul>
+    <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: bold;">
+            <i class="fas fa-box"></i>
+            PaketExpress
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/dashboard" style="color: white; text-decoration: none;">Dashboard</a>
+            <a href="/riwayat" style="color: white; text-decoration: none; text-decoration: underline;">Riwayat</a>
+            <a href="/profile" style="color: white; text-decoration: none;">Profil</a>
+        </div>
     </nav>
+
     <div class="container">
-        <div class="card"><h1>📋 Riwayat Pengiriman</h1></div>
-        <div class="card"><div id="riwayatList" style="overflow-x:auto"></div></div>
+        <div class="table-card">
+            <div class="table-header">
+                <h2 style="color: #333;">
+                    <i class="fas fa-history"></i> Riwayat Paket
+                </h2>
+            </div>
+            <table id="riwayatTable">
+                <thead>
+                    <tr>
+                        <th>No. Resi</th>
+                        <th>Penerima</th>
+                        <th>Berat</th>
+                        <th>Tarif</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px;">Memuat data...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
     <script>
-        const token = document.cookie.split('; ').find(r=>r.startsWith('token='));
-        if(!token) window.location.href='/login';
-        const tokenValue = token.split('=')[1];
-        async function loadRiwayat(){
-            const res=await fetch('/paket',{headers:{'Authorization':`Bearer ${tokenValue}`}});
-            const data=await res.json();
-            const packets = data.success&&Array.isArray(data.data)?data.data:[];
-            const container=document.getElementById('riwayatList');
-            if(packets.length===0){ container.innerHTML='<p>Belum ada riwayat</p>'; return; }
-            container.innerHTML=`<table><tr><th>Tanggal</th><th>No Resi</th><th>Rute</th><th>Berat</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
-                ${packets.map(p=>`<tr>
-                    <td>${new Date(p.created_at).toLocaleDateString('id-ID')}</td>
-                    <td>${p.no_resi}</td>
-                    <td>${p.kota_asal||'-'} → ${p.kota_tujuan||'-'}</td>
-                    <td>${p.berat_kg} kg</td>
-                    <td>Rp ${p.total_harga.toLocaleString('id-ID')}</td>
-                    <td><span class="status-${p.status}">${p.status.toUpperCase()}</span></td>
-                    <td><a href="/lacak?resi=${p.no_resi}" class="btn">Lacak</a></td>
-                </tr>`).join('')}</table>`;
+        const token = localStorage.getItem('token');
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/paket', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    displayRiwayat(data.data);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align: center;">Gagal memuat data</td></tr>';
+            }
+        });
+
+        function displayRiwayat(pakets) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            if (pakets.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 30px;">Tidak ada riwayat paket</td></tr>';
+                return;
+            }
+
+            pakets.forEach(paket => {
+                const row = document.createElement('tr');
+                const tanggal = new Date(paket.created_at).toLocaleDateString('id-ID');
+                row.innerHTML = `
+                    <td><strong>${paket.no_resi}</strong></td>
+                    <td>${paket.nama_penerima}</td>
+                    <td>${paket.berat} kg</td>
+                    <td>Rp ${Number(paket.tarif).toLocaleString('id-ID')}</td>
+                    <td><span class="status-badge status-${paket.status}">${paket.status.toUpperCase()}</span></td>
+                    <td>${tanggal}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
-        document.getElementById('logoutBtn').onclick=async(e)=>{e.preventDefault();await fetch('/logout',{method:'POST'});window.location.href='/login';};
-        loadRiwayat();
     </script>
 </body>
 </html>

@@ -2,134 +2,364 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kirim Paket - PaketExpress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial;background:#f0f2f5}
-        .navbar{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-        .nav-brand a{font-size:1.5rem;font-weight:bold;color:#667eea;text-decoration:none}
-        .nav-menu{display:flex;list-style:none;gap:1.5rem;flex-wrap:wrap}
-        .nav-menu a{text-decoration:none;color:#333}
-        .container{max-width:800px;margin:2rem auto;padding:0 1rem}
-        .card{background:#fff;border-radius:10px;padding:2rem;margin-bottom:1.5rem}
-        .card h3{color:#667eea;margin:1rem 0;border-bottom:2px solid #eee;padding-bottom:0.5rem}
-        .form-group{margin-bottom:1rem}
-        .form-group label{display:block;margin-bottom:0.5rem;font-weight:500}
-        .form-control{width:100%;padding:10px;border:1px solid #ddd;border-radius:5px}
-        select.form-control{cursor:pointer}
-        .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-        .btn{width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer}
-        .alert{padding:1rem;border-radius:5px;margin-bottom:1rem}
-        .alert-success{background:#d4edda;color:#155724}
-        .alert-danger{background:#f8d7da;color:#721c24}
-        .alert-info{background:#d1ecf1;color:#0c5460}
-        @media(max-width:600px){.row{grid-template-columns:1fr}}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar-menu {
+                gap: 10px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand"><a href="/dashboard">📦 PaketExpress</a></div>
-        <ul class="nav-menu">
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/kirim">Kirim</a></li>
-            <li><a href="/lacak">Lacak</a></li>
-            <li><a href="/tarif">Tarif</a></li>
-            <li><a href="/riwayat">Riwayat</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="#" id="logoutBtn">Logout</a></li>
-        </ul>
+        <div class="navbar-brand">
+            <i class="fas fa-box"></i>
+            PaketExpress
+        </div>
+        <div class="navbar-menu">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/kirim" style="text-decoration: underline;">Kirim</a>
+            <a href="/lacak">Lacak</a>
+            <a href="/profile">Profil</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
     </nav>
+
     <div class="container">
-        <div class="card"><h1>📤 Kirim Paket</h1><p>Isi formulir di bawah</p></div>
-        <div class="card">
-            <div id="successMsg" class="alert alert-success" style="display:none"></div>
-            <div id="errorMsg" class="alert alert-danger" style="display:none"></div>
+        <div class="form-card">
+            <h2 class="form-title">
+                <i class="fas fa-paper-plane"></i>
+                Kirim Paket Baru
+            </h2>
+
+            <div id="alertBox" class="alert"></div>
+
             <form id="kirimForm">
-                <h3>📝 Pengirim</h3>
-                <div class="form-group"><input type="text" id="nama_pengirim" class="form-control" placeholder="Nama Pengirim" required></div>
-                <div class="form-group"><textarea id="alamat_pengirim" class="form-control" rows="2" placeholder="Alamat Pengirim" required></textarea></div>
-                <div class="form-group"><input type="tel" id="telepon_pengirim" class="form-control" placeholder="No Telepon Pengirim" required></div>
-                <h3>🎯 Penerima</h3>
-                <div class="form-group"><input type="text" id="nama_penerima" class="form-control" placeholder="Nama Penerima" required></div>
-                <div class="form-group"><textarea id="alamat_penerima" class="form-control" rows="2" placeholder="Alamat Penerima" required></textarea></div>
-                <div class="form-group"><input type="tel" id="telepon_penerima" class="form-control" placeholder="No Telepon Penerima" required></div>
-                <h3>📦 Detail Paket</h3>
-                <div class="row">
-                    <div class="form-group"><select id="kota_asal" class="form-control" required><option value="">Kota Asal</option></select></div>
-                    <div class="form-group"><select id="kota_tujuan" class="form-control" required><option value="">Kota Tujuan</option></select></div>
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-user"></i>
+                        Data Pengirim
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama_pengirim">Nama Pengirim</label>
+                            <input type="text" id="nama_pengirim" name="nama_pengirim" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="no_telepon_pengirim">No. Telepon</label>
+                            <input type="tel" id="no_telepon_pengirim" name="no_telepon_pengirim">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat_pengirim">Alamat Pengirim</label>
+                        <textarea id="alamat_pengirim" name="alamat_pengirim" rows="3" required></textarea>
+                    </div>
                 </div>
-                <div class="form-group"><input type="number" id="berat_kg" class="form-control" step="0.1" placeholder="Berat (kg)" required></div>
-                <div class="form-group"><textarea id="catatan" class="form-control" rows="2" placeholder="Catatan (opsional)"></textarea></div>
-                <div id="tarifInfo" class="alert alert-info" style="display:none"></div>
-                <button type="submit" class="btn">Kirim Paket</button>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Data Penerima
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nama_penerima">Nama Penerima</label>
+                            <input type="text" id="nama_penerima" name="nama_penerima" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="no_telepon_penerima">No. Telepon</label>
+                            <input type="tel" id="no_telepon_penerima" name="no_telepon_penerima">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="alamat_penerima">Alamat Penerima</label>
+                        <textarea id="alamat_penerima" name="alamat_penerima" rows="3" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-box"></i>
+                        Detail Paket
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="berat">Berat (kg)</label>
+                            <input type="number" id="berat" name="berat" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tarif">Tarif</label>
+                            <input type="number" id="tarif" name="tarif" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="deskripsi">Deskripsi Paket (Opsional)</label>
+                        <textarea id="deskripsi" name="deskripsi" rows="2" placeholder="Contoh: Elektronik, Makanan, Buku, dll"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Kirim Paket</button>
             </form>
         </div>
     </div>
+
     <script>
-        const token = document.cookie.split('; ').find(r=>r.startsWith('token='));
-        if(!token) window.location.href='/login';
-        const tokenValue = token.split('=')[1];
-        let tarifData = [];
-        async function loadKota(){
-            const res=await fetch('/kota',{headers:{'Authorization':`Bearer ${tokenValue}`}});
-            const data=await res.json();
-            if(data.success){
-                const asal=document.getElementById('kota_asal'), tujuan=document.getElementById('kota_tujuan');
-                asal.innerHTML='<option value="">Kota Asal</option>';
-                tujuan.innerHTML='<option value="">Kota Tujuan</option>';
-                data.kota_asal?.forEach(k=>asal.innerHTML+=`<option value="${k}">${k}</option>`);
-                data.kota_tujuan?.forEach(k=>tujuan.innerHTML+=`<option value="${k}">${k}</option>`);
+        const kirimForm = document.getElementById('kirimForm');
+        const beratInput = document.getElementById('berat');
+        const tarifInput = document.getElementById('tarif');
+        const alertBox = document.getElementById('alertBox');
+
+        // Check authentication
+        window.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                window.location.href = '/login';
             }
+        });
+
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = `alert ${type} show`;
+            setTimeout(() => alertBox.classList.remove('show'), 5000);
         }
-        async function loadTarif(){
-            const res=await fetch('/tarif',{headers:{'Authorization':`Bearer ${tokenValue}`}});
-            const data=await res.json();
-            if(data.success) tarifData=data.data;
-        }
-        function cekTarif(){
-            const asal=document.getElementById('kota_asal').value, tujuan=document.getElementById('kota_tujuan').value, berat=parseFloat(document.getElementById('berat_kg').value);
-            const info=document.getElementById('tarifInfo');
-            if(asal&&tujuan&&berat>0){
-                const tarif=tarifData.find(t=>t.kota_asal===asal&&t.kota_tujuan===tujuan);
-                if(tarif){
-                    info.style.display='block';
-                    info.innerHTML=`💰 Ongkos Kirim: Rp ${(berat*tarif.harga_per_kg).toLocaleString('id-ID')}<br>📅 Estimasi: ${tarif.estimasi_hari} hari<br>📦 Tarif per kg: Rp ${tarif.harga_per_kg.toLocaleString('id-ID')}`;
-                }else info.style.display='none';
-            }else info.style.display='none';
-        }
-        document.getElementById('kota_asal').onchange=cekTarif;
-        document.getElementById('kota_tujuan').onchange=cekTarif;
-        document.getElementById('berat_kg').oninput=cekTarif;
-        document.getElementById('kirimForm').onsubmit=async(e)=>{
+
+        // Calculate tariff when weight changes
+        beratInput.addEventListener('change', async () => {
+            const berat = beratInput.value;
+            if (!berat) return;
+
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('/api/tarif/hitung', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ berat: parseFloat(berat) })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    tarifInput.value = data.data.harga;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        kirimForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const tarif=tarifData.find(t=>t.kota_asal===document.getElementById('kota_asal').value&&t.kota_tujuan===document.getElementById('kota_tujuan').value);
-            if(!tarif) return alert('Tarif tidak ditemukan');
-            const res=await fetch('/paket',{
-                method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${tokenValue}`},
-                body:JSON.stringify({
-                    idtarif:tarif.idtarif,
-                    nama_pengirim:document.getElementById('nama_pengirim').value,
-                    alamat_pengirim:document.getElementById('alamat_pengirim').value,
-                    telepon_pengirim:document.getElementById('telepon_pengirim').value,
-                    nama_penerima:document.getElementById('nama_penerima').value,
-                    alamat_penerima:document.getElementById('alamat_penerima').value,
-                    telepon_penerima:document.getElementById('telepon_penerima').value,
-                    berat_kg:parseFloat(document.getElementById('berat_kg').value),
-                    catatan:document.getElementById('catatan').value
-                })
-            });
-            const data=await res.json();
-            if(data.success){
-                document.getElementById('successMsg').style.display='block';
-                document.getElementById('successMsg').innerHTML=`✅ ${data.message}<br>📋 No Resi: ${data.no_resi}<br>💰 Total: Rp ${data.total_harga.toLocaleString('id-ID')}`;
-                setTimeout(()=>window.location.href=`/lacak?resi=${data.no_resi}`,3000);
-            }else{
-                document.getElementById('errorMsg').style.display='block';
-                document.getElementById('errorMsg').textContent='❌ '+data.message;
+
+            const token = localStorage.getItem('token');
+            const formData = {
+                no_resi: `PE${Date.now()}`,
+                nama_pengirim: document.getElementById('nama_pengirim').value,
+                alamat_pengirim: document.getElementById('alamat_pengirim').value,
+                nama_penerima: document.getElementById('nama_penerima').value,
+                alamat_penerima: document.getElementById('alamat_penerima').value,
+                berat: parseFloat(document.getElementById('berat').value),
+                tarif: parseFloat(document.getElementById('tarif').value || 0)
+            };
+
+            try {
+                const response = await fetch('/api/paket', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showAlert('Paket berhasil dikirim! No. Resi: ' + data.data.no_resi, 'success');
+                    kirimForm.reset();
+                    setTimeout(() => window.location.href = '/riwayat', 2000);
+                } else {
+                    showAlert(data.message || 'Gagal mengirim paket', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'error');
             }
-        };
-        document.getElementById('logoutBtn').onclick=async(e)=>{e.preventDefault();await fetch('/logout',{method:'POST'});window.location.href='/login';};
-        loadKota(); loadTarif();
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
     </script>
 </body>
 </html>

@@ -2,92 +2,287 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Profile - PaketExpress</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - PaketExpress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial;background:#f0f2f5}
-        .navbar{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-        .nav-brand a{font-size:1.5rem;font-weight:bold;color:#667eea;text-decoration:none}
-        .nav-menu{display:flex;list-style:none;gap:1.5rem;flex-wrap:wrap}
-        .nav-menu a{text-decoration:none;color:#333}
-        .container{max-width:600px;margin:2rem auto;padding:0 1rem}
-        .card{background:#fff;border-radius:10px;padding:2rem;margin-bottom:1.5rem}
-        .form-group{margin-bottom:1rem}
-        .form-group label{display:block;margin-bottom:0.5rem;font-weight:500}
-        .form-control{width:100%;padding:10px;border:1px solid #ddd;border-radius:5px}
-        textarea.form-control{resize:vertical}
-        .btn{width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer}
-        .alert{padding:1rem;border-radius:5px;margin-bottom:1rem}
-        .alert-success{background:#d4edda;color:#155724;display:none}
-        .alert-danger{background:#f8d7da;color:#721c24;display:none}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 50px;
+        }
+
+        .profile-form {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group input[readonly] {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand"><a href="/dashboard">📦 PaketExpress</a></div>
-        <ul class="nav-menu">
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/kirim">Kirim</a></li>
-            <li><a href="/lacak">Lacak</a></li>
-            <li><a href="/tarif">Tarif</a></li>
-            <li><a href="/riwayat">Riwayat</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="#" id="logoutBtn">Logout</a></li>
-        </ul>
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: bold;">
+            <i class="fas fa-box"></i>
+            PaketExpress
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/dashboard" style="color: white; text-decoration: none;">Dashboard</a>
+            <a href="/profile" style="color: white; text-decoration: none; text-decoration: underline;">Profil</a>
+            <a href="#" onclick="logout()" style="color: white; text-decoration: none;">Logout</a>
+        </div>
     </nav>
+
     <div class="container">
-        <div class="card"><h1>👤 Profile Saya</h1></div>
-        <div class="card">
-            <div id="successMsg" class="alert alert-success"></div>
-            <div id="errorMsg" class="alert alert-danger"></div>
-            <form id="profileForm">
-                <div class="form-group"><label>Nama</label><input type="text" id="nama" class="form-control" disabled></div>
-                <div class="form-group"><label>Email</label><input type="email" id="email" class="form-control" disabled></div>
-                <div class="form-group"><label>No Telepon</label><input type="tel" id="no_telepon" class="form-control"></div>
-                <div class="form-group"><label>Alamat</label><textarea id="alamat" class="form-control" rows="3"></textarea></div>
-                <button type="submit" class="btn">Update Profile</button>
-            </form>
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h2 id="profileName">Loading...</h2>
+                <p id="profileEmail">-</p>
+            </div>
+
+            <div class="profile-form">
+                <div id="alertBox" class="alert"></div>
+
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="email">Email (Tidak dapat diubah)</label>
+                        <input type="email" id="email" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="no_telepon">No. Telepon</label>
+                        <input type="tel" id="no_telepon" placeholder="08xxxxxxxxxx">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <textarea id="alamat" rows="3"></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Simpan Perubahan
+                        </button>
+                        <a href="/dashboard" class="btn btn-secondary" style="text-align: center; text-decoration: none;">
+                            <i class="fas fa-arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+
     <script>
-        const token = document.cookie.split('; ').find(r=>r.startsWith('token='));
-        if(!token) window.location.href='/login';
-        const tokenValue = token.split('=')[1];
-        async function loadProfile(){
-            const res=await fetch('/profile',{headers:{'Authorization':`Bearer ${tokenValue}`}});
-            const data=await res.json();
-            if(data.success&&data.data){
-                document.getElementById('nama').value=data.data.nama;
-                document.getElementById('email').value=data.data.email;
-                document.getElementById('no_telepon').value=data.data.no_telepon||'';
-                document.getElementById('alamat').value=data.data.alamat||'';
-            }
+        const token = localStorage.getItem('token');
+        const alertBox = document.getElementById('alertBox');
+
+        function showAlert(message, type) {
+            alertBox.textContent = message;
+            alertBox.className = `alert ${type} show`;
+            setTimeout(() => alertBox.classList.remove('show'), 5000);
         }
-        document.getElementById('profileForm').onsubmit=async(e)=>{
-            e.preventDefault();
-            const res=await fetch('/profile',{
-                method:'PUT',
-                headers:{'Content-Type':'application/json','Authorization':`Bearer ${tokenValue}`},
-                body:JSON.stringify({
-                    no_telepon:document.getElementById('no_telepon').value,
-                    alamat:document.getElementById('alamat').value
-                })
-            });
-            const data=await res.json();
-            if(data.success){
-                const s=document.getElementById('successMsg');
-                s.style.display='block';
-                s.textContent='✅ '+data.message;
-                setTimeout(()=>s.style.display='none',3000);
-            }else{
-                const e=document.getElementById('errorMsg');
-                e.style.display='block';
-                e.textContent='❌ '+data.message;
-                setTimeout(()=>e.style.display='none',3000);
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (!token) {
+                window.location.href = '/login';
+                return;
             }
-        };
-        document.getElementById('logoutBtn').onclick=async(e)=>{e.preventDefault();await fetch('/logout',{method:'POST'});window.location.href='/login';};
-        loadProfile();
+
+            try {
+                const response = await fetch('/api/users/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    const user = data.data;
+                    document.getElementById('profileName').textContent = user.nama;
+                    document.getElementById('profileEmail').textContent = user.email;
+                    document.getElementById('email').value = user.email;
+                    document.getElementById('nama').value = user.nama;
+                    document.getElementById('no_telepon').value = user.no_telepon || '';
+                    document.getElementById('alamat').value = user.alamat || '';
+                } else {
+                    showAlert('Gagal memuat profil', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'error');
+            }
+        });
+
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                nama: document.getElementById('nama').value,
+                no_telepon: document.getElementById('no_telepon').value,
+                alamat: document.getElementById('alamat').value
+            };
+
+            try {
+                const response = await fetch('/api/users/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    showAlert('Profil berhasil diperbarui', 'success');
+                } else {
+                    showAlert(data.message || 'Gagal memperbarui profil', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Terjadi kesalahan', 'error');
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        }
     </script>
 </body>
 </html>

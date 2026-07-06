@@ -1,23 +1,33 @@
 {
   "name": "paket-express",
   "version": "1.0.0",
-  "description": "Aplikasi Pengiriman Paket Online",
+  "description": "Aplikasi pengiriman paket dengan tracking real-time",
+  "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
+  "keywords": [
+    "paket",
+    "express",
+    "tracking",
+    "shipping"
+  ],
+  "author": "Dharma Class",
+  "license": "MIT",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.6",
-    "dotenv": "^16.4.7",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.22.3"
+    "express": "^4.18.2",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.1.2",
+    "cors": "^2.8.5",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
+    "mysql2": "^3.6.5",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.0.1"
   }
 }

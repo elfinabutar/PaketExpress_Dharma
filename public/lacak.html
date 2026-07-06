@@ -2,97 +2,272 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lacak Paket - PaketExpress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:Arial;background:#f0f2f5}
-        .navbar{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-        .nav-brand a{font-size:1.5rem;font-weight:bold;color:#667eea;text-decoration:none}
-        .nav-menu{display:flex;list-style:none;gap:1.5rem;flex-wrap:wrap}
-        .nav-menu a{text-decoration:none;color:#333}
-        .container{max-width:800px;margin:2rem auto;padding:0 1rem}
-        .card{background:#fff;border-radius:10px;padding:2rem;margin-bottom:1.5rem}
-        .form-group{margin-bottom:1rem}
-        .form-control{width:100%;padding:10px;border:1px solid #ddd;border-radius:5px}
-        .btn{padding:10px 20px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer}
-        .alert{padding:1rem;border-radius:5px;margin-bottom:1rem}
-        .alert-success{background:#d4edda;color:#155724}
-        .alert-danger{background:#f8d7da;color:#721c24}
-        .alert-info{background:#d1ecf1;color:#0c5460}
-        table{width:100%;border-collapse:collapse}
-        th,td{padding:10px;text-align:left;border-bottom:1px solid #ddd}
-        .status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px}
-        .status-pending{background:#fef3c7;color:#d97706}
-        .status-diproses{background:#dbeafe;color:#2563eb}
-        .status-dikirim{background:#d1fae5;color:#059669}
-        .status-diterima{background:#d4edda;color:#155724}
-        .status-batal{background:#fee2e2;color:#dc2626}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .search-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-form input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .search-form button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .tracking-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+
+        .tracking-card.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tracking-header {
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .tracking-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            padding: 8px 12px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        .tracking-timeline {
+            margin-top: 30px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 40px;
+            width: 2px;
+            height: 30px;
+            background: #ddd;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-status {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .timeline-time {
+            color: #666;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand"><a href="/dashboard">📦 PaketExpress</a></div>
-        <ul class="nav-menu">
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/kirim">Kirim</a></li>
-            <li><a href="/lacak">Lacak</a></li>
-            <li><a href="/tarif">Tarif</a></li>
-            <li><a href="/riwayat">Riwayat</a></li>
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="#" id="logoutBtn">Logout</a></li>
-        </ul>
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 24px; font-weight: bold;">
+            <i class="fas fa-box"></i>
+            PaketExpress
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/dashboard" style="color: white; text-decoration: none;">Dashboard</a>
+            <a href="/lacak" style="color: white; text-decoration: none; text-decoration: underline;">Lacak</a>
+            <a href="/profile" style="color: white; text-decoration: none;">Profil</a>
+        </div>
     </nav>
+
     <div class="container">
-        <div class="card">
-            <h1>🔍 Lacak Paket</h1>
-            <div class="form-group">
-                <input type="text" id="no_resi" class="form-control" placeholder="Masukkan Nomor Resi">
+        <div class="search-card">
+            <h2 style="margin-bottom: 20px; color: #333;">
+                <i class="fas fa-search"></i> Lacak Paket Anda
+            </h2>
+            <form class="search-form" id="searchForm">
+                <input type="text" id="noResi" placeholder="Masukkan nomor resi paket..." required>
+                <button type="submit">Cari</button>
+            </form>
+        </div>
+
+        <div class="tracking-card" id="trackingCard">
+            <div class="tracking-header">
+                <div class="tracking-status">
+                    <span>No. Resi:</span>
+                    <strong id="resiNumber">-</strong>
+                </div>
+                <div class="tracking-status">
+                    <span>Status:</span>
+                    <span class="status-badge" id="statusBadge">-</span>
+                </div>
             </div>
-            <button onclick="lacak()" class="btn">Lacak</button>
-            <div id="result"></div>
+
+            <div style="margin-bottom: 20px;">
+                <p><strong>Pengirim:</strong> <span id="pengirim">-</span></p>
+                <p><strong>Penerima:</strong> <span id="penerima">-</span></p>
+                <p><strong>Berat:</strong> <span id="berat">-</span> kg</p>
+            </div>
+
+            <div class="tracking-timeline" id="timeline"></div>
         </div>
     </div>
+
     <script>
-        const token = document.cookie.split('; ').find(r=>r.startsWith('token='));
-        if(!token) window.location.href='/login';
-        const tokenValue = token.split('=')[1];
-        const urlParams = new URLSearchParams(window.location.search);
-        const resiParam = urlParams.get('resi');
-        if(resiParam){
-            document.getElementById('no_resi').value = resiParam;
-            lacak();
-        }
-        async function lacak(){
-            const no_resi = document.getElementById('no_resi').value;
-            if(!no_resi) return alert('Masukkan nomor resi');
-            try{
-                const res = await fetch(`/lacak/${no_resi}`,{headers:{'Authorization':`Bearer ${tokenValue}`}});
-                const data = await res.json();
-                const resultDiv = document.getElementById('result');
-                if(data.success){
-                    const p = data.data;
-                    const statusClass = `status-${p.status}`;
-                    resultDiv.innerHTML = `
-                        <div class="alert alert-success"><h3>📦 Ditemukan!</h3></div>
-                        <div class="card"><h3>Detail Paket</h3>
-                        <table><tr><th>No Resi</th><td>${p.no_resi}</td></tr>
-                        <tr><th>Status</th><td><span class="status-badge ${statusClass}">${p.status.toUpperCase()}</span></td></tr>
-                        <tr><th>Pengirim</th><td>${p.nama_pengirim}<br>${p.alamat_pengirim}<br>${p.telepon_pengirim}</td></tr>
-                        <tr><th>Penerima</th><td>${p.nama_penerima}<br>${p.alamat_penerima}<br>${p.telepon_penerima}</td></tr>
-                        <tr><th>Rute</th><td>${p.kota_asal} → ${p.kota_tujuan}</td></tr>
-                        <tr><th>Berat</th><td>${p.berat_kg} kg</td></tr>
-                        <tr><th>Total</th><td>Rp ${p.total_harga.toLocaleString('id-ID')}</td></tr></table></div>
-                        <div class="card"><h3>Riwayat Tracking</h3><table><tr><th>Waktu</th><th>Status</th><th>Lokasi</th><th>Keterangan</th></tr>
-                        ${p.tracking?.map(t=>`<tr><td>${new Date(t.created_at).toLocaleString('id-ID')}</td><td>${t.status.toUpperCase()}</td><td>${t.lokasi||'-'}</td><td>${t.keterangan||'-'}</td></tr>`).join('') || '<tr><td colspan="4">Belum ada tracking</td></tr>'}
-                        </table></div>`;
-                }else{
-                    resultDiv.innerHTML = `<div class="alert alert-danger">❌ ${data.message}</div>`;
-                }
-            }catch(err){
-                document.getElementById('result').innerHTML = `<div class="alert alert-danger">❌ Gagal melacak paket</div>`;
+        const searchForm = document.getElementById('searchForm');
+        const trackingCard = document.getElementById('trackingCard');
+
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const noResi = document.getElementById('noResi').value;
+            const token = localStorage.getItem('token');
+
+            if (!token) {
+                window.location.href = '/login';
+                return;
             }
+
+            try {
+                const response = await fetch(`/api/paket/lacak/${noResi}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayTracking(data.data);
+                } else {
+                    alert('Paket tidak ditemukan');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan');
+            }
+        });
+
+        function displayTracking(paket) {
+            document.getElementById('resiNumber').textContent = paket.no_resi;
+            document.getElementById('pengirim').textContent = paket.nama_pengirim + ', ' + paket.alamat_pengirim;
+            document.getElementById('penerima').textContent = paket.nama_penerima + ', ' + paket.alamat_penerima;
+            document.getElementById('berat').textContent = paket.berat;
+            document.getElementById('statusBadge').textContent = paket.status.toUpperCase();
+
+            // Display timeline
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+
+            if (paket.riwayat_status) {
+                const riwayat = JSON.parse(paket.riwayat_status);
+                riwayat.forEach((item, index) => {
+                    const timelineItem = document.createElement('div');
+                    timelineItem.className = 'timeline-item';
+                    timelineItem.innerHTML = `
+                        <div class="timeline-dot">${index + 1}</div>
+                        <div class="timeline-content">
+                            <div class="timeline-status">${item.status}</div>
+                            <div class="timeline-time">${new Date(item.waktu).toLocaleString('id-ID')}</div>
+                        </div>
+                    `;
+                    timeline.appendChild(timelineItem);
+                });
+            }
+
+            trackingCard.classList.add('show');
         }
-        document.getElementById('logoutBtn').onclick=async(e)=>{e.preventDefault();await fetch('/logout',{method:'POST'});window.location.href='/login';};
     </script>
 </body>
 </html>

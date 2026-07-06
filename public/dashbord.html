@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - PaketExpress</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:Arial;background:#f0f2f5}
+        .navbar{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center}
+        .nav-brand a{font-size:1.5rem;font-weight:bold;color:#667eea;text-decoration:none}
+        .nav-menu{display:flex;list-style:none;gap:1.5rem}
+        .nav-menu a{text-decoration:none;color:#333}
+        .container{max-width:1200px;margin:2rem auto;padding:0 1rem}
+        .welcome-card{background:#fff;border-radius:10px;padding:2rem;margin-bottom:2rem;text-align:center}
+        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:2rem}
+        .stat-card{background:#fff;border-radius:10px;padding:1.5rem;display:flex;align-items:center;gap:1rem}
+        .stat-icon{font-size:2.5rem}
+        .stat-info h3{font-size:1.8rem;color:#667eea}
+        .quick-actions{background:#fff;border-radius:10px;padding:2rem}
+        .action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem}
+        .action-btn{background:#f7f7f7;padding:1.5rem;text-align:center;text-decoration:none;color:#333;border-radius:10px;display:block}
+        .action-btn:hover{background:#667eea;color:#fff}
+        .action-icon{font-size:2rem;margin-bottom:0.5rem}
+        @media(max-width:768px){.stats-grid,.action-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a href="/dashboard">📦 PaketExpress</a></div>
+        <ul class="nav-menu">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/kirim">Kirim</a></li>
+            <li><a href="/lacak">Lacak</a></li>
+            <li><a href="/tarif">Tarif</a></li>
+            <li><a href="/riwayat">Riwayat</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="#" id="logoutBtn">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="welcome-card">
+            <h1>Selamat Datang, <span id="userName">...</span>!</h1>
+            <p>Kirim paket dengan mudah dan lacak secara realtime</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-info"><h3 id="totalPaket">0</h3><p>Total Paket</p></div></div>
+            <div class="stat-card"><div class="stat-icon">🔄</div><div class="stat-info"><h3 id="dalamProses">0</h3><p>Dalam Proses</p></div></div>
+            <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-info"><h3 id="selesai">0</h3><p>Selesai</p></div></div>
+        </div>
+        <div class="quick-actions">
+            <h2>Aksi Cepat</h2>
+            <div class="action-grid">
+                <a href="/kirim" class="action-btn"><div class="action-icon">📤</div><span>Kirim Paket</span></a>
+                <a href="/lacak" class="action-btn"><div class="action-icon">🔍</div><span>Lacak Paket</span></a>
+                <a href="/tarif" class="action-btn"><div class="action-icon">💰</div><span>Cek Tarif</span></a>
+                <a href="/riwayat" class="action-btn"><div class="action-icon">📋</div><span>Riwayat</span></a>
+            </div>
+        </div>
+    </div>
+    <script>
+        const token = document.cookie.split('; ').find(r => r.startsWith('token='));
+        if (!token) window.location.href = '/login';
+        const tokenValue = token.split('=')[1];
+        
+        fetch('/profile', {
+            headers: { 'Authorization': `Bearer ${tokenValue}` }
+        }).then(r => r.json()).then(d => {
+            if (d.success) document.getElementById('userName').textContent = d.data.nama;
+        }).catch(e => console.log(e));
+        
+        fetch('/paket', {
+            headers: { 'Authorization': `Bearer ${tokenValue}` }
+        }).then(r => r.json()).then(d => {
+            if (d.success && d.data) {
+                const p = d.data;
+                document.getElementById('totalPaket').textContent = p.length;
+                document.getElementById('dalamProses').textContent = p.filter(x => x.status === 'pending' || x.status === 'diproses' || x.status === 'dikirim').length;
+                document.getElementById('selesai').textContent = p.filter(x => x.status === 'diterima').length;
+            }
+        }).catch(e => console.log(e));
+        
+        document.getElementById('logoutBtn').onclick = async () => {
+            await fetch('/logout', { method: 'POST' });
+            window.location.href = '/login';
+        };
+    </script>
+</body>
+</html>

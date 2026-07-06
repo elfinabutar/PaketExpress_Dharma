@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Cek Tarif - PaketExpress</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:Arial;background:#f0f2f5}
+        .navbar{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+        .nav-brand a{font-size:1.5rem;font-weight:bold;color:#667eea;text-decoration:none}
+        .nav-menu{display:flex;list-style:none;gap:1.5rem;flex-wrap:wrap}
+        .nav-menu a{text-decoration:none;color:#333}
+        .container{max-width:1200px;margin:2rem auto;padding:0 1rem}
+        .card{background:#fff;border-radius:10px;padding:2rem;margin-bottom:1.5rem}
+        .form-control{width:100%;padding:10px;border:1px solid #ddd;border-radius:5px}
+        .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+        table{width:100%;border-collapse:collapse}
+        th,td{padding:10px;text-align:left;border-bottom:1px solid #ddd}
+        th{background:#f5f5f5}
+        @media(max-width:600px){.row{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a href="/dashboard">📦 PaketExpress</a></div>
+        <ul class="nav-menu">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/kirim">Kirim</a></li>
+            <li><a href="/lacak">Lacak</a></li>
+            <li><a href="/tarif">Tarif</a></li>
+            <li><a href="/riwayat">Riwayat</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="#" id="logoutBtn">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="card"><h1>💰 Cek Tarif Pengiriman</h1></div>
+        <div class="card">
+            <div class="row">
+                <input type="text" id="cariAsal" class="form-control" placeholder="Cari Kota Asal">
+                <input type="text" id="cariTujuan" class="form-control" placeholder="Cari Kota Tujuan">
+            </div>
+            <div id="tarifList"></div>
+        </div>
+    </div>
+    <script>
+        const token = document.cookie.split('; ').find(r=>r.startsWith('token='));
+        if(!token) window.location.href='/login';
+        const tokenValue = token.split('=')[1];
+        let allTarif = [];
+        async function loadTarif(){
+            const res=await fetch('/tarif',{headers:{'Authorization':`Bearer ${tokenValue}`}});
+            const data=await res.json();
+            if(data.success){ allTarif=data.data; renderTarif(allTarif); }
+        }
+        function renderTarif(tarif){
+            const container=document.getElementById('tarifList');
+            if(tarif.length===0){ container.innerHTML='<p>Tidak ada data</p>'; return; }
+            container.innerHTML=`<table><tr><th>Kota Asal</th><th>Kota Tujuan</th><th>Harga per kg</th><th>Estimasi</th></tr>
+                ${tarif.map(t=>`<tr><td>${t.kota_asal}</td><td>${t.kota_tujuan}</td><td>Rp ${t.harga_per_kg.toLocaleString('id-ID')}</td><td>${t.estimasi_hari} hari</td></tr>`).join('')}</table>`;
+        }
+        function filter(){
+            const asal=document.getElementById('cariAsal').value.toLowerCase();
+            const tujuan=document.getElementById('cariTujuan').value.toLowerCase();
+            const filtered=allTarif.filter(t=>t.kota_asal.toLowerCase().includes(asal)&&t.kota_tujuan.toLowerCase().includes(tujuan));
+            renderTarif(filtered);
+        }
+        document.getElementById('cariAsal').oninput=filter;
+        document.getElementById('cariTujuan').oninput=filter;
+        document.getElementById('logoutBtn').onclick=async(e)=>{e.preventDefault();await fetch('/logout',{method:'POST'});window.location.href='/login';};
+        loadTarif();
+    </script>
+</body>
+</html>

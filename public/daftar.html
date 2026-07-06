@@ -1,57 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lupa Pasword</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700&family=Lemon&display=swap"rel="stylesheet">
-    <link rel="stylesheet" href="daftar.css">
-
+    <title>Daftar - PaketExpress</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:Arial;background:linear-gradient(135deg,#667eea,#764ba2);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+        .card{background:#fff;border-radius:10px;padding:2rem;width:100%;max-width:500px}
+        h1{color:#667eea;text-align:center;margin-bottom:2rem}
+        input,textarea{width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:5px}
+        button{width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer}
+        .error{color:#c33;margin-bottom:1rem;display:none;padding:10px;background:#fee}
+        .success{color:#155724;margin-bottom:1rem;display:none;padding:10px;background:#d4edda}
+        .links{text-align:center;margin-top:1rem}
+    </style>
 </head>
-
 <body>
-
-
-    <div class="login-container">
-
-        <div class="login-left">
-            <div class="left-content">
-                <h1>KAI</h1>
-                <p>Semakin Melayani<br>Kereta Api Indonesia</p>
-            </div>
-        </div>
-
-
-        <div class="login-right">
-            <h2>Register</h2>
-            <p>Buat akun anda</p>
-            <form>
-                <input type="email" placeholder="Username">
-                <input type="email" placeholder="Email">
-                <input type="email" placeholder="Password">
-                
-                <a href="/login" class="btn-kirim">Kirim</a>
-
-                <a href="login.html">Kembali ke Login</a>
-            </form> 
-
-            <div class="divider">
-                <span>ATAU</span>
-            </div>
-
-            <div>
-
-            </div>
-
-            <p class="daftar">Lupa Password? <a href="lupa.html">Lupa</a></p>
-
-        </div>
-
+    <div class="card">
+        <h1>📦 Daftar Akun</h1>
+        <div id="successMsg" class="success"></div>
+        <div id="errorMsg" class="error"></div>
+        <form id="registerForm">
+            <input type="text" id="nama" placeholder="Nama Lengkap" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="tel" id="no_telepon" placeholder="No Telepon (opsional)">
+            <textarea id="alamat" rows="3" placeholder="Alamat (opsional)"></textarea>
+            <button type="submit">Daftar</button>
+        </form>
+        <div class="links"><a href="/login">Sudah punya akun? Login</a></div>
     </div>
-
+    <script>
+        document.getElementById('registerForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const res = await fetch('/register', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({
+                    nama:document.getElementById('nama').value,
+                    email:document.getElementById('email').value,
+                    password:document.getElementById('password').value,
+                    no_telepon:document.getElementById('no_telepon').value,
+                    alamat:document.getElementById('alamat').value
+                })
+            });
+            const data = await res.json();
+            if(data.success){
+                document.getElementById('successMsg').style.display='block';
+                document.getElementById('successMsg').textContent='✅ '+data.message;
+                setTimeout(()=>window.location.href='/login',2000);
+            }else{
+                document.getElementById('errorMsg').style.display='block';
+                document.getElementById('errorMsg').textContent='❌ '+data.message;
+            }
+        };
+    </script>
 </body>
-
 </html>

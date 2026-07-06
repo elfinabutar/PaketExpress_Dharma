@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile - PaketExpress</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:Arial;background:#f0f2f5}
+        .navbar{background:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+        .nav-brand a{font-size:1.5rem;font-weight:bold;color:#667eea;text-decoration:none}
+        .nav-menu{display:flex;list-style:none;gap:1.5rem;flex-wrap:wrap}
+        .nav-menu a{text-decoration:none;color:#333}
+        .container{max-width:600px;margin:2rem auto;padding:0 1rem}
+        .card{background:#fff;border-radius:10px;padding:2rem;margin-bottom:1.5rem}
+        .form-group{margin-bottom:1rem}
+        .form-group label{display:block;margin-bottom:0.5rem;font-weight:500}
+        .form-control{width:100%;padding:10px;border:1px solid #ddd;border-radius:5px}
+        textarea.form-control{resize:vertical}
+        .btn{width:100%;padding:12px;background:#667eea;color:#fff;border:none;border-radius:5px;cursor:pointer}
+        .alert{padding:1rem;border-radius:5px;margin-bottom:1rem}
+        .alert-success{background:#d4edda;color:#155724;display:none}
+        .alert-danger{background:#f8d7da;color:#721c24;display:none}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><a href="/dashboard">📦 PaketExpress</a></div>
+        <ul class="nav-menu">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/kirim">Kirim</a></li>
+            <li><a href="/lacak">Lacak</a></li>
+            <li><a href="/tarif">Tarif</a></li>
+            <li><a href="/riwayat">Riwayat</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="#" id="logoutBtn">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="card"><h1>👤 Profile Saya</h1></div>
+        <div class="card">
+            <div id="successMsg" class="alert alert-success"></div>
+            <div id="errorMsg" class="alert alert-danger"></div>
+            <form id="profileForm">
+                <div class="form-group"><label>Nama</label><input type="text" id="nama" class="form-control" disabled></div>
+                <div class="form-group"><label>Email</label><input type="email" id="email" class="form-control" disabled></div>
+                <div class="form-group"><label>No Telepon</label><input type="tel" id="no_telepon" class="form-control"></div>
+                <div class="form-group"><label>Alamat</label><textarea id="alamat" class="form-control" rows="3"></textarea></div>
+                <button type="submit" class="btn">Update Profile</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const token = document.cookie.split('; ').find(r=>r.startsWith('token='));
+        if(!token) window.location.href='/login';
+        const tokenValue = token.split('=')[1];
+        async function loadProfile(){
+            const res=await fetch('/profile',{headers:{'Authorization':`Bearer ${tokenValue}`}});
+            const data=await res.json();
+            if(data.success&&data.data){
+                document.getElementById('nama').value=data.data.nama;
+                document.getElementById('email').value=data.data.email;
+                document.getElementById('no_telepon').value=data.data.no_telepon||'';
+                document.getElementById('alamat').value=data.data.alamat||'';
+            }
+        }
+        document.getElementById('profileForm').onsubmit=async(e)=>{
+            e.preventDefault();
+            const res=await fetch('/profile',{
+                method:'PUT',
+                headers:{'Content-Type':'application/json','Authorization':`Bearer ${tokenValue}`},
+                body:JSON.stringify({
+                    no_telepon:document.getElementById('no_telepon').value,
+                    alamat:document.getElementById('alamat').value
+                })
+            });
+            const data=await res.json();
+            if(data.success){
+                const s=document.getElementById('successMsg');
+                s.style.display='block';
+                s.textContent='✅ '+data.message;
+                setTimeout(()=>s.style.display='none',3000);
+            }else{
+                const e=document.getElementById('errorMsg');
+                e.style.display='block';
+                e.textContent='❌ '+data.message;
+                setTimeout(()=>e.style.display='none',3000);
+            }
+        };
+        document.getElementById('logoutBtn').onclick=async(e)=>{e.preventDefault();await fetch('/logout',{method:'POST'});window.location.href='/login';};
+        loadProfile();
+    </script>
+</body>
+</html>
